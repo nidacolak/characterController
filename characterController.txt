@@ -1,0 +1,38 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class characterController : MonoBehaviour
+{
+
+    public float speed = 0.01f;  //speed tanımlanıyor
+    private Rigidbody2D r2d;   //bu tanımların işi doldurulması gerekiyor bunun için getcomponenet
+    private Animator _animator;
+
+    void Start()
+    {
+        //GetComponent () : Verilen bileşen tipini objede arar, eğer obje bu bileşene sahipse bileşeni, sahip değilse null değeri döndürür.
+        r2d = GetComponent<Rigidbody2D> (); //bu scripti aynı objenin üzerine koyacağımız için . Obejenin üzerinde birrigitbody bir de animator olacak
+        _animator = GetComponent<Animator>(); //bu iki component oyunun başında alınacak buna caching denir
+    }
+
+    void Update() //oyun sürerken. Her karede çağrılan fonksiyon. Bu fonksiyonda klavyede bastığımız tuşları kontrol etmek istiyoruz
+    {
+
+        if (Input.GetKey(KeyCode.Space)) // space basılı tutulunca karakter koşsun 
+        {
+            speed = 1.0f;
+            Debug.Log("Hız 1.0f"); // Debug.Log bizlere bir kaç yazıyı Unity nin konsol kısmında görmemizi sağlayan yapıdır
+        }
+        else
+        {
+            speed = 0.0f;
+            Debug.Log("Hız 0.0f");
+        }
+        // hız değişkeninin animatore etki etmesi lazım. bunun için koddaki sppedi animatordeki speede eşlemek gerek
+        _animator.SetFloat("speed", speed); //floatingpoint seti gerekiyor. ürettiğimiz parametre speed olduğu için "speed". Virgülden sonra girdi istiyor bu da 8.satırdaki speed
+        r2d.velocity = new Vector2(x:speed, y:0f); // y ekseninde hareket etemyecek, x ekseninde hızı kadar hareket edecek
+    }
+    
+
+}
